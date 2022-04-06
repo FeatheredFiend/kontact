@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Test Results{% endblock %}
+
+{% block body %}
+<div class="">
+  {% if app.user != null %}
+  <div class="row">
+    <div class="col-sm-12 col-lg-4">
+      <br>
+        <a href="{{ path('testresult_create') }}"><button type="button" class="btn btn-primary btn-block nav-link">Create Test Result</button></a>
+      <br>
+      {{ knp_pagination_filter(pagination, {'tr.recordedvalue': 'Value'}) }}
+      <br>
+      {{ knp_pagination_render(pagination, null, {}, {
+        'align': 'center',
+        'size': 'large',
+        'rounded': true,
+      }) }}
+    </div>
+    <div class="col-sm-12 col-lg-8 table-responsive">
+    <br>
+      <table class="table table-striped table-light">
+        <thead>
+          <tr>
+            <th>Test Result ID</th>
+            <th>Test History</th>
+            <th>Disease</th>
+            <th>Recorded Value</th>
+          </tr>
+        </thead>
+        <tbody name="testresultTable" id="testresultTable">
+          {% for testresult in pagination %}
+          {% set id = testresult.id %}
+          <tr>
+            <td><a class="nav-link" href="{{ path('testresult_edit', {'id': testresult.id}) }}">{{ testresult.id}}</a></td>
+            <td>{{ testresult.testhistory }}</td>           
+            <td>{{ testresult.disease }}</td> 
+            <td>{{ testresult.recordedvalue }}</td> 
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

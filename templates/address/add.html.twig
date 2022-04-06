@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+{% block title %}Add Address{% endblock %}
+{% block body %}
+
+<div class="example-wrapper">
+  <div class="card-body">
+    <div class="card-header">
+      <div class="text-center">Add Address Details</div>
+    </div>
+    {% if app.user != null %}
+    {{ form_start(form) }}
+    <div class="">     
+      <div class="form_group">
+        <div class="col-md-12 mb-3">
+          {{ form_row(form.addressline1, {'attr': {'class': 'form-control'}}) }}
+        </div>
+      </div>
+      <div class="form_group">
+        <div class="col-md-12 mb-3">
+          {{ form_row(form.addressline2, {'attr': {'class': 'form-control'}}) }}
+        </div>
+      </div>
+      <div class="form_group">
+        <div class="col-md-12 mb-3">
+          {{ form_row(form.addressline3, {'attr': {'class': 'form-control'}}) }}
+        </div>
+      </div>
+      <div class="form_group">
+        <div class="col-md-12 mb-3">
+          {{ form_row(form.addressline4, {'attr': {'class': 'form-control'}}) }}
+        </div>
+      </div>
+      <div class="form_group">
+        <div class="col-md-12 mb-3">
+          {{ form_row(form.addressline5, {'attr': {'class': 'form-control'}}) }}
+        </div>
+      </div>
+      <div class="form_group">
+        <div class="col-md-12 mb-3">
+          {{ form_row(form.addressline6, {'attr': {'class': 'form-control'}}) }}
+        </div>
+      </div>
+      <div class="form_group">
+        <div class="col-md-12 mb-3">
+          {{ form_row(form.latitude, {'attr': {'class': 'form-control'}}) }}
+        </div>
+      </div>
+      <div class="form_group">
+        <div class="col-md-12 mb-3">
+          {{ form_row(form.longitude, {'attr': {'class': 'form-control'}}) }}
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-12 col-md-offset-4" style="margin-top:5px;">
+        <button type="submit" class="btn btn-primary btn-block">
+          <i class="fa fa-btn fa-user"></i> Add Address
+        </button>
+      </div>
+    </div>
+    {{ form_end(form) }}
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

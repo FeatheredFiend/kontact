@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Laboratories{% endblock %}
+
+{% block body %}
+<div class="">
+  {% if app.user != null %}
+  <div class="row">
+    <div class="col-sm-12 col-lg-4">
+      <br>
+        <a href="{{ path('laboratory_create') }}"><button type="button" class="btn btn-primary btn-block nav-link">Create Laboratory</button></a>
+      <br>
+      {{ knp_pagination_filter(pagination, {'l.name': 'Name','a.addressline1': 'Address'}) }}
+      <br>
+      {{ knp_pagination_render(pagination, null, {}, {
+        'align': 'center',
+        'size': 'large',
+        'rounded': true,
+      }) }}
+    </div>
+    <div class="col-sm-12 col-lg-8 table-responsive">
+    <br>
+      <table class="table table-striped table-light">
+        <thead>
+          <tr>
+            <th>Laboratory ID</th>
+            <th>Name</th>
+            <th>Address</th>
+          </tr>
+        </thead>
+        <tbody name="laboratoryTable" id="laboratoryTable">
+          {% for laboratory in pagination %}
+          {% set id = laboratory.id %}
+          <tr>
+            <td><a class="nav-link" href="{{ path('laboratory_edit', {'id': laboratory.id}) }}">{{ laboratory.id}}</a></td>
+            <td>{{ laboratory.name }}</td>           
+            <td>{{ laboratory.address }}</td> 
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

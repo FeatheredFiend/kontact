@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+{% block title %}Edit Infection{% endblock %}
+{% block body %}
+
+<div class="example-wrapper">
+  <div class="card-body">
+    <div class="card-header">
+      <div class="text-center">Edit Infection Details</div>
+    </div>
+    {% if app.user != null %}
+    {{ form_start(form) }}
+    <div class="">     
+      <div class="form_group">
+        <div class="col-md-12 mb-3">
+          <input type="hidden" name="add_infection[client]" value="{{ form.client.vars.value }}">
+          {{ form_row(form.client, {'attr': {'class': 'form-control', 'disabled': 'true'}}) }}
+        </div>
+      </div>
+      <div class="form_group">
+        <div class="col-md-12 mb-3">
+          <input type="hidden" name="add_infection[disease]" value="{{ form.disease.vars.value }}">
+          {{ form_row(form.disease, {'attr': {'class': 'form-control', 'disabled': 'true'}}) }}
+        </div>
+      </div>
+      <div class="form_group">
+        <div class="col-md-12 mb-3">
+          <input type="hidden" name="add_infection[infectiontest]" value="{{ form.infectiontest.vars.value }}">
+          {{ form_row(form.infectiontest, {'attr': {'class': 'form-control', 'disabled': 'true'}}) }}
+        </div>
+      </div>
+      <div class="form_group">
+        <div class="col-md-12 mb-3">
+          <input type="hidden" name="add_infection[infectiondate]" value="{{ form.vars.value.infectiondate|date('Y-m-d') }}">
+          {{ form_row(form.infectiondate, {'attr': {'class': 'form-control', 'disabled': 'true'}}) }}
+        </div>
+      </div>
+      <div class="form_group">
+        <div class="col-md-12 mb-3">
+          {{ form_row(form.recoveredtest, {'attr': {'class': 'form-control'}}) }}
+        </div>
+      </div>
+      <div class="form_group">
+        <div class="col-md-12 mb-3">
+          {{ form_row(form.recovereddate, {'attr': {'class': 'form-control'}}) }}
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-12 col-md-offset-4" style="margin-top:5px;">
+        <button type="submit" class="btn btn-primary btn-block">
+          <i class="fa fa-btn fa-user"></i> Edit Infection
+        </button>
+      </div>
+    </div>
+    {{ form_end(form) }}
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

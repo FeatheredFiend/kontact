@@ -1,0 +1,281 @@
+{% extends 'base.html.twig' %}
+{% block title %}Add Client{% endblock %}
+{% block body %}
+
+<div class="example-wrapper">
+  <div class="card-body">
+    <div class="card-header">
+      <div class="text-center">Add Client Details</div>
+    </div>
+    {% if app.user != null %}
+    <div class="row">
+      <div class="col">
+        <button class="btn btn-danger btn-name btn-block" onclick="openName()">Name</button>
+      </div>
+      <div class="col">
+        <button class="btn btn-danger btn-address btn-block" onclick="openLocation()">Location</button>
+      </div>
+    </div>
+    {{ form_start(form) }}
+    <div class="row">     
+        <div class="col"  id="nameSection" style="display: none;">
+          <div class="form_group">
+            <div class="col-md-12 mb-3">
+              {{ form_row(form.healthservice, {'attr': {'class': 'form-control'}}) }}
+            </div>
+          </div>
+          <div class="form_group">
+            <div class="col-md-12 mb-3">
+              {{ form_row(form.name, {'attr': {'class': 'form-control'}}) }}
+            </div>
+          </div>
+          <div class="form_group">
+            <div class="col-md-12 mb-3">
+              {{ form_row(form.birthdate, {'attr': {'class': 'form-control'}}) }}
+            </div>
+          </div>
+        </div>
+        <div class="col" id="locationSection" style="display: none;">
+          <div class="form_group card-body" id="addressForm">
+            <div class="col-sm-12 col-md-12">
+                {{ form_row(form.addressform.addressline1, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="col-sm-12 col-md-12">
+                {{ form_row(form.addressform.addressline2, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="col-sm-12 col-md-12">
+                {{ form_row(form.addressform.addressline3, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="col-sm-12 col-md-12">
+                {{ form_row(form.addressform.addressline4, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="col-sm-12 col-md-12">
+                {{ form_row(form.addressform.addressline5, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="col-sm-12 col-md-12">
+                {{ form_row(form.addressform.addressline6, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="col-sm-12 col-md-12">
+                {{ form_row(form.addressform.latitude, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="col-sm-12 col-md-12">
+                {{ form_row(form.addressform.longitude, {'attr': {'class': 'form-control'}}) }}
+            </div>
+          </div>
+          <div class="form_group" id="address" style="display: none;">
+            <div class="col-md-12 mb-3">
+              {{ form_row(form.address, {'attr': {'class': 'form-control'}}) }}
+            </div>
+          </div>
+          <div class="form_group">
+            <div class="col-md-12 mb-3">
+              {{ form_row(form.phonenumber, {'attr': {'class': 'form-control'}}) }}
+            </div>
+          </div>
+          <div class="form_group">
+            <div class="col-md-12 mb-3">
+              {{ form_row(form.emailaddress, {'attr': {'class': 'form-control'}}) }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-12 col-md-offset-4" style="margin-top:5px;">
+        <button type="submit" class="btn btn-primary btn-block">
+        <i class="fa fa-btn fa-user"></i> Add Client
+        </button>
+      </div>
+    </div>
+    {{ form_end(form) }}
+    {% endif %}
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+$("#client_addressform_longitude").on("focusout", function () {
+  var found;
+  var answer = $('#client_addressform_addressline1').val();
+  var dd = $('#client_address');
+  var options = $('#client_address')[0].options;
+  var ddLength = options.length;
+  for (var i = 0; i < ddLength; i++) {
+      if (options[i].text === answer) {
+          options.selectedIndex = i;
+          found = true;
+          break;
+      }
+  }
+  if (found == true) {
+    addressForm();
+    addressField();
+    var el = document.getElementById('addressForm');
+    el.remove();
+  } else {
+      var addressline1 = $(client_addressform_addressline1);
+      var addressline2 = $(client_addressform_addressline2);
+      var addressline3 = $(client_addressform_addressline3);
+      var addressline4 = $(client_addressform_addressline4);
+      var addressline5 = $(client_addressform_addressline5);
+      var addressline6 = $(client_addressform_addressline6);
+      var latitude = $(client_addressform_latitude);
+      var longitude = $(client_addressform_longitude);
+      $.ajax({
+          url: "{{ path('update_address') }}",
+          type: "POST",
+          dataType: "JSON",
+          data: {
+              address1: addressline1.val(),
+              address2: addressline2.val(),
+              address3: addressline3.val(),
+              address4: addressline4.val(),
+              address5: addressline5.val(),
+              address6: addressline6.val(),
+              latitude: latitude.val(),
+              longitude: longitude.val(),
+          },
+          success: function (address) {
+
+          },
+          error: function (err) {
+              alert(err);
+          }
+      });
+
+      // Request the addresses of the selected assetcategory.
+      $.ajax({
+          url: "{{ path('update_address_field') }}",
+          type: "GET",
+          dataType: "JSON",
+          data: {
+          },
+          success: function (addresses) {
+              var addressSelect = $("#client_address");
+
+              // Remove current options
+              addressSelect.html('');
+              
+              // Empty value ...
+              
+              $.each(addresses, function (key, address) {
+                var isLastElement = key == addresses.length -1;
+                if (isLastElement) {
+                  addressSelect.append('<option value="' + address.id + '" selected>' + address.addressline1 + '</option>');
+                } else {
+                  addressSelect.append('<option value="' + address.id + '">' + address.addressline1 + '</option>');
+                }
+
+
+              });
+          },
+          error: function (err) {
+              alert(err);
+          }
+      });
+
+
+
+    addressForm();
+    addressField();
+    var el = document.getElementById('addressForm');
+    el.remove();
+
+
+  }
+
+});
+
+  function addressForm() {
+  var x = document.getElementById("addressForm");
+    x.style.display = "none";
+ }
+
+ function addressField() {
+  var x = document.getElementById("address");
+    x.style.display = "block";
+ }
+
+var nameValue = 0;
+var locationValue = 0;
+
+
+$("#client_healthservice").on("change", function () {
+    if($(this).val()==''){
+      nameValue = "";
+    } else{
+      nameValue = nameValue + 1;
+    }
+});
+
+$("#client_name").on("change", function () {
+    if($(this).val()==''){
+      nameValue = "";
+    } else{
+      nameValue = nameValue +  1;
+    }
+});
+
+$("#client_birthdate_year").on("change", function () {
+    if($(this).val()==''){
+      nameValue = "";
+    } else{
+      nameValue = nameValue +  1;
+    }
+    
+    if(nameValue >= 3) {
+      $('.btn-name').css({background:'green'});
+      openName();
+    }else{
+    }
+});
+
+$("#client_address").on("change", function () {
+    if($(this).val()==''){
+      locationValue = "";
+    } else{
+      locationValue = locationValue + 1;
+    }
+});
+
+$("#client_phonenumber").on("change", function () {
+    if($(this).val()==''){
+      locationValue = "";
+    } else{
+      locationValue = locationValue + 1;
+    }
+});
+
+
+$("#client_emailaddress").on("change", function () {
+    if($(this).val()==''){
+      locationValue = "";
+    } else{
+      locationValue = locationValue +  1;
+    }
+
+  if(locationValue >= 3) {
+    $('.btn-address').css({background:'green'});
+    openLocation();
+  }else{
+  }
+});
+
+ function openName() {
+  var x = document.getElementById("nameSection");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  } 
+ }
+ function openLocation() {
+  var x = document.getElementById("locationSection");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  } 
+ }
+</script>
+
+{% endblock %}

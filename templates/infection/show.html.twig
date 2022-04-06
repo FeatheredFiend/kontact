@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Infections{% endblock %}
+
+{% block body %}
+<div class="">
+  {% if app.user != null %}
+  <div class="row">
+    <div class="col-sm-12 col-lg-4">
+      <br>
+        <a href="{{ path('infection_create') }}"><button type="button" class="btn btn-primary btn-block nav-link">Create Infection</button></a>
+      <br>
+      {{ knp_pagination_filter(pagination, {'c.name': 'Client','d.name': 'Disease'}) }}
+      <br>
+      {{ knp_pagination_render(pagination, null, {}, {
+        'align': 'center',
+        'size': 'large',
+        'rounded': true,
+      }) }}
+    </div>
+    <div class="col-sm-12 col-lg-8 table-responsive">
+    <br>
+      <table class="table table-striped table-light">
+        <thead>
+          <tr>
+            <th>Infection ID</th>
+            <th>Client</th>
+            <th>Disease</th>
+            <th>Infection Test</th>
+            <th>Infection Date</th>
+            <th>Recovered Test</th>
+            <th>Recovered Date</th>
+          </tr>
+        </thead>
+        <tbody name="infectionTable" id="infectionTable">
+          {% for infection in pagination %}
+          {% set id = infection.id %}
+          <tr>
+            <td><a class="nav-link" href="{{ path('infection_edit', {'id': infection.id}) }}">{{ infection.id}}</a></td>
+            <td>{{ infection.client }}</td>           
+            <td>{{ infection.disease }}</td> 
+            <td>{{ infection.infectiontest }}</td> 
+            <td>{{ infection.infectiondate|date('d-m-Y') }}</td> 
+            <td>{{ infection.recoveredtest }}</td> 
+            <td>{{ infection.recovereddate ? infection.recovereddate|date('d-m-Y') }}</td> 
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

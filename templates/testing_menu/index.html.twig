@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+{% block title %}Testing Menu{% endblock %}
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card bg-light mb-3 mt-3">
+                <div class="card-body">
+                    {% if app.user != null %}
+                    <div class="container">
+                        <div class="row">
+                            <div class="card col-sm-12 col-md-3" style="width: 18rem;">
+                              <div class="card-body">
+                                <a href="{{ path('testhistory_show') }}"><h2 class="card-title text-center pt-5">Test History</h2></a>
+                              </div>
+                            </div>
+                            <div class="card col-sm-12 col-md-3" style="width: 18rem;">
+                              <div class="card-body">
+                                <a href="{{ path('testcategory_show') }}"><h2 class="card-title text-center pt-5">Test Categories</h2></a>
+                              </div>
+                            </div>
+                            <div class="card col-sm-12 col-md-3" style="width: 18rem;">
+                              <div class="card-body">
+                                <a href="{{ path('testlocation_show') }}"><h2 class="card-title text-center pt-5">Test Locations</h2></a>
+                              </div>
+                            </div>
+                            <div class="card col-sm-12 col-md-3" style="width: 18rem;">
+                              <div class="card-body">
+                                <a href="{{ path('laboratory_show') }}"><h2 class="card-title text-center pt-5">Laboratories</h2></a>
+                              </div>
+                            </div>                                                        
+                        </div>
+                    </div>          
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

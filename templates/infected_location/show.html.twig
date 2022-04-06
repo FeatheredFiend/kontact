@@ -1,0 +1,158 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Infected Locations{% endblock %}
+{% block body %}
+<div class="">
+  {% if app.user != null %}
+  <div class="row">
+    <div class="col-sm-12 col-lg-4">
+      <br>
+        <a href="{{ path('infectedlocation_create') }}"><button type="button" class="btn btn-primary btn-block nav-link">Create Infected Location</button></a>
+      <br>
+      {{ knp_pagination_filter(pagination, {'c.name': 'Name'}) }}
+      <br>
+      {{ knp_pagination_render(pagination, null, {}, {
+        'align': 'center',
+        'size': 'large',
+        'rounded': true,
+      }) }}
+    </div>
+    <div class="col-sm-12 col-lg-8 table-responsive">
+    <br>
+      <table class="table table-striped table-light">
+        <thead>
+          <tr>
+            <th>Infected Location ID</th>
+            <th>Contact History</th>
+            <th>Infection</th>
+          </tr>
+        </thead>
+        <tbody name="infectedlocationTable" id="infectedlocationTable">
+          {% for infectedlocation in pagination %}
+          {% set id = infectedlocation.id %}
+          <tr>
+            <td><a class="nav-link" href="{{ path('infectedlocation_edit', {'id': infectedlocation.id}) }}">{{ infectedlocation.id}}</a></td>
+            <td>{{ infectedlocation.contacthistory.client ~ " " ~ infectedlocation.contacthistory.contactdatetime|date('d-m-Y H:i:s') }}</td>           
+            <td>{{ infectedlocation.infection.client ~ " " ~ infectedlocation.infection.disease.name }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row" id="mapRow">
+  {% for latitude in paginationLatitude %}
+    <div style="display: none;" id="latitude{{loop.index}}">{{latitude.latitude}}</div>
+  {% endfor %}
+  {% for longitude in paginationLongitude %}
+    <div style="display: none;" id="longitude{{loop.index}}">{{longitude.longitude}}</div>
+  {% endfor %}
+  {% for latitudeContact in paginationLatitudeContact %}
+    <div style="display: none;" id="latitudeContact{{loop.index}}">{{latitudeContact.latitude}}</div>
+  {% endfor %}
+  {% for longitudeContact in paginationLongitudeContact %}
+    <div style="display: none;" id="longitudeContact{{loop.index}}">{{longitudeContact.longitude}}</div>
+  {% endfor %}
+    <div style="display: none;" id="longitudelength">{{paginationLongitude|length}}</div>
+    <div style="display: none;" id="longitudeContactlength">{{paginationLongitudeContact|length}}</div>
+    <div id="map" style="height: 400px; width: 100%;"></div>
+  </div>
+  {% endif %}
+</div>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBM7-90raqFIONt29xEcpPz7_rz4-1LvDE&callback=initMap&libraries=&v=weekly"
+      async
+    ></script>
+    <script>
+// The following example creates complex markers to indicate beaches near
+// Sydney, NSW, Australia. Note that the anchor is set to (0,32) to correspond
+// to the base of the flagpole.
+function initMap() {
+  const map = new google.maps.Map(document.getElementById("map"), {
+    zoom: 10,
+    center: { lat: 52.205338, lng: 0.121817 },
+  });
+  var length = document.getElementById("longitudelength").innerText;
+  var lengthContact = document.getElementById("longitudeContactlength").innerText;
+  const latitude = [];
+  const longitude = [];
+  const latitudeContact = [];
+  const longitudeContact = [];
+for (let i = 0; i < length; i++) {
+  var j = i + 1;
+  latitude.push(document.getElementById("latitude" + j).innerText);
+  longitude.push(document.getElementById("longitude" + j).innerText);
+}
+for (let i = 0; i < lengthContact; i++) {
+  var j = i + 1;
+  latitudeContact.push(document.getElementById("latitudeContact" + j).innerText);
+  longitudeContact.push(document.getElementById("longitudeContact" + j).innerText);
+}
+
+// Data for the markers consisting of a name, a LatLng and a zIndex for the
+// order in which these markers should display on top of each other.
+const beaches = [
+
+];
+for (let i = 0; i < length; i++) {
+  beaches.push({title: i , lat: parseFloat(latitude[i]), lng: parseFloat(longitude[i]), zIndex: i },);
+}
+
+  // Adds markers to the map.
+  // Marker sizes are expressed as a Size of X,Y where the origin of the image
+  // (0,0) is located in the top left of the image.
+  // Origins, anchor positions and coordinates of the marker increase in the X
+  // direction to the right and in the Y direction down.
+  const image = {
+    url: "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png",
+    // This marker is 20 pixels wide by 32 pixels high.
+    size: new google.maps.Size(20, 32),
+    // The origin for this image is (0, 0).
+    origin: new google.maps.Point(0, 0),
+    // The anchor for this image is the base of the flagpole at (0, 32).
+    anchor: new google.maps.Point(0, 32),
+  };
+  // Shapes define the clickable region of the icon. The type defines an HTML
+  // <area> element 'poly' which traces out a polygon as a series of X,Y points.
+  // The final coordinate closes the poly by connecting to the first coordinate.
+  const shape = {
+    coords: [1, 1, 1, 20, 18, 20, 18, 1],
+    type: "poly",
+  };
+
+  for (let i = 0; i < beaches.length; i++) {
+    const beach = beaches[i];
+    new google.maps.Marker({
+      position: { lat: beach["lat"], lng: beach["lng"] },
+      map,
+      icon: image,
+      shape: shape,
+      title: beach["title"],
+      zIndex: beach["zIndex"],
+    });
+  }
+
+const contactPlanCoordinates = [
+];
+for (let i = 0; i < lengthContact; i++) {
+  contactPlanCoordinates.push({ lat: parseFloat(latitudeContact[i]), lng: parseFloat(longitudeContact[i]) },);
+}
+  const contactPath = new google.maps.Polyline({
+    path: contactPlanCoordinates,
+    geodesic: true,
+    strokeColor: "#FF0000",
+    strokeOpacity: 1.0,
+    strokeWeight: 2,
+  });
+if (navigator.geolocation) {
+     navigator.geolocation.getCurrentPosition(function (position) {
+         initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+         map.setCenter(initialLocation);
+     });
+ }
+  contactPath.setMap(map);
+
+}
+
+    </script>
+{% endblock %}

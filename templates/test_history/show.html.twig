@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Test Histories{% endblock %}
+
+{% block body %}
+<div class="">
+  {% if app.user != null %}
+  <div class="row">
+    <div class="col-sm-12 col-lg-4">
+      <br>
+        <a href="{{ path('testhistory_create') }}"><button type="button" class="btn btn-primary btn-block nav-link">Create Test History</button></a>
+      <br>
+      {{ knp_pagination_filter(pagination, {'a.name': 'Name','a.address': 'Address'}) }}
+      <br>
+      {{ knp_pagination_render(pagination, null, {}, {
+        'align': 'center',
+        'size': 'large',
+        'rounded': true,
+      }) }}
+    </div>
+    <div class="col-sm-12 col-lg-8 table-responsive">
+    <br>
+      <table class="table table-striped table-light">
+        <thead>
+          <tr>
+            <th>Test History ID</th>
+            <th>Test Category</th>
+            <th>Test Location</th>
+            <th>Laboratory</th>
+            <th>Client</th>
+            <th>Test Date</th>
+          </tr>
+        </thead>
+        <tbody name="testhistoryTable" id="testhistoryTable">
+          {% for testhistory in pagination %}
+          {% set id = testhistory.id %}
+          <tr>
+            <td><a class="nav-link" href="{{ path('testhistory_edit', {'id': testhistory.id}) }}">{{ testhistory.id}}</a></td>
+            <td>{{ testhistory.testcategory }}</td>           
+            <td>{{ testhistory.testlocation }}</td> 
+            <td>{{ testhistory.laboratory }}</td> 
+            <td>{{ testhistory.client }}</td> 
+            <td>{{ testhistory.testdate |date('d-m-Y')}}</td> 
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

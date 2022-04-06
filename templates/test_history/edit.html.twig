@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+{% block title %}Edit Test History{% endblock %}
+{% block body %}
+
+<div class="example-wrapper">
+  <div class="card-body">
+    <div class="card-header">
+      <div class="text-center">Edit Test History Details</div>
+    </div>
+    {% if app.user != null %}
+    {{ form_start(form) }}
+    <div class="">     
+      <div class="form_group">
+        <div class="col-md-12 mb-3">
+          {{ form_row(form.testcategory, {'attr': {'class': 'form-control'}}) }}
+        </div>
+      </div>
+      <div class="form_group">
+        <div class="col-md-12 mb-3">
+          {{ form_row(form.testlocation, {'attr': {'class': 'form-control'}}) }}
+        </div>
+      </div>
+      <div class="form_group">
+        <div class="col-md-12 mb-3">
+          {{ form_row(form.laboratory, {'attr': {'class': 'form-control'}}) }}
+        </div>
+      </div>
+      <div class="form_group">
+        <div class="col-md-12 mb-3">
+          {{ form_row(form.client, {'attr': {'class': 'form-control'}}) }}
+        </div>
+      </div>
+      <div class="form_group">
+        <div class="col-md-12 mb-3">
+          {{ form_row(form.testdate, {'attr': {'class': 'form-control'}}) }}
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-12 col-md-offset-4" style="margin-top:5px;">
+        <button type="submit" class="btn btn-primary btn-block">
+          <i class="fa fa-btn fa-user"></i> Edit Test History
+        </button>
+      </div>
+    </div>
+    {{ form_end(form) }}
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+{% block title %}Disease Menu{% endblock %}
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card bg-light mb-3 mt-3">
+                <div class="card-body">
+                    {% if app.user != null %}
+                    <div class="container">
+                        <div class="row">
+                            <div class="card col-sm-12 col-md-4" style="width: 18rem;">
+                              <div class="card-body">
+                                <a href="{{ path('disease_show') }}"><h2 class="card-title text-center pt-5">Diseases</h2></a>
+                              </div>
+                            </div>
+                            <div class="card col-sm-12 col-md-4" style="width: 18rem;">
+                              <div class="card-body">
+                                <a href="{{ path('symptom_show') }}"><h2 class="card-title text-center pt-5">Symptoms</h2></a>
+                              </div>
+                            </div>
+                            <div class="card col-sm-12 col-md-4" style="width: 18rem;">
+                              <div class="card-body">
+                                <a href="{{ path('diseasesymptom_show') }}"><h2 class="card-title text-center pt-5">Disease Symptoms</h2></a>
+                              </div>
+                            </div>
+                        </div>
+                    </div>          
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

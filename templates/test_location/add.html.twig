@@ -1,0 +1,166 @@
+{% extends 'base.html.twig' %}
+{% block title %}Add Test Location{% endblock %}
+{% block body %}
+
+<div class="example-wrapper">
+  <div class="card-body">
+    <div class="card-header">
+      <div class="text-center">Add Test Location Details</div>
+    </div>
+    {% if app.user != null %}
+    {{ form_start(form) }}
+    <div class="">     
+      <div class="form_group">
+        <div class="col-md-12 mb-3">
+          {{ form_row(form.name, {'attr': {'class': 'form-control'}}) }}
+        </div>
+      </div>
+      <div class="form_group card-body" id="addressForm">
+        <div class="col-sm-12 col-md-12">
+            {{ form_row(form.addressform.addressline1, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        <div class="col-sm-12 col-md-12">
+            {{ form_row(form.addressform.addressline2, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        <div class="col-sm-12 col-md-12">
+            {{ form_row(form.addressform.addressline3, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        <div class="col-sm-12 col-md-12">
+            {{ form_row(form.addressform.addressline4, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        <div class="col-sm-12 col-md-12">
+            {{ form_row(form.addressform.addressline5, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        <div class="col-sm-12 col-md-12">
+            {{ form_row(form.addressform.addressline6, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        <div class="col-sm-12 col-md-12">
+            {{ form_row(form.addressform.latitude, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        <div class="col-sm-12 col-md-12">
+            {{ form_row(form.addressform.longitude, {'attr': {'class': 'form-control'}}) }}
+        </div>
+      </div>
+      <div class="form_group" id="address" style="display: none;">
+        <div class="col-md-12 mb-3">
+          {{ form_row(form.address, {'attr': {'class': 'form-control'}}) }}
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-12 col-md-offset-4" style="margin-top:5px;">
+        <button type="submit" class="btn btn-primary btn-block">
+          <i class="fa fa-btn fa-user"></i> Add Test Location
+        </button>
+      </div>
+    </div>
+    {{ form_end(form) }}
+    {% endif %}
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+$("#test_location_addressform_longitude").on("focusout", function () {
+  var found;
+  var answer = $('#test_location_addressform_addressline1').val();
+  var dd = $('#test_location_address');
+  var options = $('#test_location_address')[0].options;
+  var ddLength = options.length;
+  for (var i = 0; i < ddLength; i++) {
+      if (options[i].text === answer) {
+          options.selectedIndex = i;
+          found = true;
+          break;
+      }
+  }
+  if (found == true) {
+    addressForm();
+    addressField();
+    var el = document.getElementById('addressForm');
+    el.remove();
+  } else {
+      var addressline1 = $(test_location_addressform_addressline1);
+      var addressline2 = $(test_location_addressform_addressline2);
+      var addressline3 = $(test_location_addressform_addressline3);
+      var addressline4 = $(test_location_addressform_addressline4);
+      var addressline5 = $(test_location_addressform_addressline5);
+      var addressline6 = $(test_location_addressform_addressline6);
+      var latitude = $(test_location_addressform_latitude);
+      var longitude = $(test_location_addressform_longitude);
+      $.ajax({
+          url: "{{ path('update_address') }}",
+          type: "POST",
+          dataType: "JSON",
+          data: {
+              address1: addressline1.val(),
+              address2: addressline2.val(),
+              address3: addressline3.val(),
+              address4: addressline4.val(),
+              address5: addressline5.val(),
+              address6: addressline6.val(),
+              latitude: latitude.val(),
+              longitude: longitude.val(),
+          },
+          success: function (address) {
+
+          },
+          error: function (err) {
+              alert(err);
+          }
+      });
+
+      // Request the addresses of the selected assetcategory.
+      $.ajax({
+          url: "{{ path('update_address_field') }}",
+          type: "GET",
+          dataType: "JSON",
+          data: {
+          },
+          success: function (addresses) {
+              var addressSelect = $("#test_location_address");
+
+              // Remove current options
+              addressSelect.html('');
+              
+              // Empty value ...
+              
+              $.each(addresses, function (key, address) {
+                var isLastElement = key == addresses.length -1;
+                if (isLastElement) {
+                  addressSelect.append('<option value="' + address.id + '" selected>' + address.addressline1 + '</option>');
+                } else {
+                  addressSelect.append('<option value="' + address.id + '">' + address.addressline1 + '</option>');
+                }
+
+
+              });
+          },
+          error: function (err) {
+              alert(err);
+          }
+      });
+
+
+
+    addressForm();
+    addressField();
+    var el = document.getElementById('addressForm');
+    el.remove();
+
+
+  }
+
+});
+
+  function addressForm() {
+  var x = document.getElementById("addressForm");
+    x.style.display = "none";
+ }
+
+ function addressField() {
+  var x = document.getElementById("address");
+    x.style.display = "block";
+ }
+
+</script>
+{% endblock %}

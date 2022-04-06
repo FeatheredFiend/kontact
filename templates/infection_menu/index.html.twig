@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+{% block title %}Infection Menu{% endblock %}
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card bg-light mb-3 mt-3">
+                <div class="card-body">
+                    {% if app.user != null %}
+                    <div class="container">
+                        <div class="row">
+                            <div class="card col-sm-12 col-md-6" style="width: 18rem;">
+                              <div class="card-body">
+                                <a href="{{ path('infection_show') }}"><h2 class="card-title text-center pt-5">Infections</h2></a>
+                              </div>
+                            </div>
+                            <div class="card col-sm-12 col-md-6" style="width: 18rem;">
+                              <div class="card-body">
+                                <a href="{{ path('infectionsymptom_show') }}"><h2 class="card-title text-center pt-5">Infection Symptoms</h2></a>
+                              </div>
+                            </div>
+                        </div>
+                    </div>          
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

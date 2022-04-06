@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Action Log{% endblock %}
+
+{% block body %}
+
+<div class="">
+  {% if app.user != null %}
+  <div class="row">
+    <div class="col-sm-12 col-lg-4">
+      <br>
+      {{ knp_pagination_filter(pagination, {'dtn.name': 'Data Table','al.row': 'Row Number', 'u.name': 'User Name','al.timestamp': 'Timestamp'}) }}
+      <br>
+      {{ knp_pagination_render(pagination, null, {}, {
+        'align': 'center',
+        'size': 'large',
+        'rounded': true,
+      }) }}
+    </div>
+    <div class="col-sm-12 col-lg-8 table-responsive">
+      <br>
+      <table class="table table-striped table-light">
+        <thead>
+          <tr>
+            <th>Action Log ID</th>
+            <th>Data Table</th>
+            <th>Row Number</th>
+            <th>User</th>
+            <th>Action Timestamp</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody name="assetsubTable" id="assetsubTable">
+          {% for actionlog in pagination %}
+          {% set id = actionlog.id %}
+          <tr>    
+            <td><a class="nav-link" href="">{{ actionlog.id }}</a></td>
+            <td>{{ actionlog.datatable }}</td>           
+            <td>{{ actionlog.rownumber }}</td>  
+            <td>{{ actionlog.timestamp|date('d-m-Y H:i:s') }}</td>
+            <td>{{ actionlog.user }}</td>
+            <td>{{ actionlog.action }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

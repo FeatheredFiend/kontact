@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+{% block title %}Data Menu{% endblock %}
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card bg-light mb-3 mt-3">
+                <div class="card-body">
+                    {% if app.user != null %}
+                    <div class="container">
+                        <div class="row">
+                            <div class="card col-sm-12 col-md-3" style="width: 18rem;">
+                              <div class="card-body">
+                                <a href="{{ path('address_show') }}"><h2 class="card-title text-center pt-5">Addresses</h2></a>   
+                              </div>
+                            </div>
+                            <div class="card col-sm-12 col-md-3" style="width: 18rem;">
+                              <div class="card-body">
+                                <a href="{{ path('client_show') }}"><h2 class="card-title text-center pt-5">Clients</h2></a>   
+                              </div>
+                            </div>                            
+                            <div class="card col-sm-12 col-md-3" style="width: 18rem;">
+                              <div class="card-body">
+                                <a href="{{ path('disease_menu') }}"><h2 class="card-title text-center pt-5">Diseases</h2></a>   
+                              </div>
+                            </div>
+                            <div class="card col-sm-12 col-md-3" style="width: 18rem;">
+                              <div class="card-body">
+                                <a href="{{ path('registration_show') }}"><h2 class="card-title text-center pt-5">Users</h2></a>   
+                              </div>
+                            </div>
+                        </div>
+                    </div>          
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

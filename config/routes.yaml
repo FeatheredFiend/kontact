@@ -1,0 +1,11 @@
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
+update_address:
+    path:     /post-address
+    defaults: { _controller: "App:Client:postNewAddressAction" }
+    methods:  POST
+update_address_field:
+    path:     /get-address
+    defaults: { _controller: "App:Client:getNewAddressAction" }
+    methods:  GET

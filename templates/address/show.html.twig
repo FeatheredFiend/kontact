@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Addresses{% endblock %}
+
+{% block body %}
+<div class="">
+  {% if app.user != null %}
+  <div class="row">
+    <div class="col-sm-12 col-lg-4">
+      <br>
+        <a href="{{ path('address_create') }}"><button type="button" class="btn btn-primary btn-block nav-link">Create Address</button></a>
+      <br>
+      {{ knp_pagination_filter(pagination, {'a.addressline1': 'Address Line 1','a.addressline2': 'Address Line 2','a.addressline3': 'Address Line 3','a.addressline4': 'Address Line 4','a.addressline5': 'Address Line 5','a.addressline6': 'Address Line 6','a.latitude': 'Latitude','a.longitude': 'Longitude'}) }}
+      <br>
+      {{ knp_pagination_render(pagination, null, {}, {
+        'align': 'center',
+        'size': 'large',
+        'rounded': true,
+      }) }}
+    </div>
+    <div class="col-sm-12 col-lg-8 table-responsive">
+    <br>
+      <table class="table table-striped table-light">
+        <thead>
+          <tr>
+            <th>Address ID</th>
+            <th>Address Line 1</th>
+            <th>Address Line 2</th>
+            <th>Address Line 3</th>
+            <th>Address Line 4</th>
+            <th>Address Line 5</th>
+            <th>Address Line 6</th>
+            <th>Latitude</th>
+            <th>Longitude</th>
+          </tr>
+        </thead>
+        <tbody name="addressTable" id="addressTable">
+          {% for address in pagination %}
+          {% set id = address.id %}
+          <tr>
+            <td><a class="nav-link" href="{{ path('address_edit', {'id': address.id}) }}">{{ address.id}}</a></td>
+            <td>{{ address.addressline1 }}</td>           
+            <td>{{ address.addressline2 }}</td> 
+            <td>{{ address.addressline3 }}</td> 
+            <td>{{ address.addressline4 }}</td> 
+            <td>{{ address.addressline5 }}</td>
+            <td>{{ address.addressline6 }}</td>
+            <td>{{ address.latitude }}</td> 
+            <td>{{ address.longitude }}</td> 
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

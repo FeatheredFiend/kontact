@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Symptoms{% endblock %}
+
+{% block body %}
+<div class="">
+  {% if app.user != null %}
+  <div class="row">
+    <div class="col-sm-12 col-lg-4">
+      <br>
+        <a href="{{ path('symptom_create') }}"><button type="button" class="btn btn-primary btn-block nav-link">Create Symptom</button></a>
+      <br>
+      {{ knp_pagination_filter(pagination, {'a.name': 'Name'}) }}
+      <br>
+      {{ knp_pagination_render(pagination, null, {}, {
+        'align': 'center',
+        'size': 'large',
+        'rounded': true,
+      }) }}
+    </div>
+    <div class="col-sm-12 col-lg-8 table-responsive">
+    <br>
+      <table class="table table-striped table-light">
+        <thead>
+          <tr>
+            <th>Symptom ID</th>
+            <th>Name</th>
+          </tr>
+        </thead>
+        <tbody name="symptomTable" id="symptomTable">
+          {% for symptom in pagination %}
+          {% set id = symptom.id %}
+          <tr>
+            <td><a class="nav-link" href="{{ path('symptom_edit', {'id': symptom.id}) }}">{{ symptom.id}}</a></td>
+            <td>{{ symptom.name }}</td>           
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
